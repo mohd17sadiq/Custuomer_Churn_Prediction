@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChurnGuard | Customer Churn Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="brand">
+        <div class="brand-icon">C</div>
+        <div>
+            <h1>ChurnGuard</h1>
+            <span>AI-Powered Customer Intelligence</span>
+        </div>
+    </div>
+    <div class="status">
+        <span class="status-dot"></span> Model Online
+    </div>
+</nav>
+
+<main class="container">
+
+    <section class="hero">
+        <div>
+            <p class="eyebrow">CUSTOMER RETENTION ANALYTICS</p>
+            <h2>Predict customer churn<br><span>before it happens.</span></h2>
+            <p class="hero-text">
+                Enter customer information to estimate the likelihood of churn using a machine learning model trained on telecom customer behavior.
+            </p>
+        </div>
+        <div class="hero-stat">
+            <strong>ML</strong>
+            <span>Random Forest<br>Prediction Engine</span>
+        </div>
+    </section>
+
+    {% if error %}
+    <div class="alert error">{{ error }}</div>
+    {% endif %}
+
+    {% if result %}
+    <section class="result-card {% if 'Churn' in result %}danger{% else %}success{% endif %}">
+        <div class="result-icon">{% if 'Churn' in result %}!</div>{% else %}✓</div>{% endif %}
+        <div class="result-content">
+            <p class="result-label">PREDICTION RESULT</p>
+            <h3>{{ result }}</h3>
+            <p>Model confidence: <strong>{{ probability }}%</strong></p>
+        </div>
+        <div class="confidence">
+            <div class="confidence-ring" style="--progress: {{ probability }}%">
+                <span>{{ probability }}%</span>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <form method="POST" class="prediction-form">
+
+        <div class="form-section">
+            <div class="section-heading">
+                <div class="section-number">01</div>
+                <div>
+                    <h3>Customer Profile</h3>
+                    <p>Basic customer information</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="field">
+                    <label>Gender</label>
+                    <select name="gender" required>
+                        <option value="">Select gender</option>
+                        <option>Female</option>
+                        <option>Male</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Senior Citizen</label>
+                    <select name="SeniorCitizen" required>
+                        <option value="">Select option</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Partner</label>
+                    <select name="Partner" required>
+                        <option value="">Select option</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Dependents</label>
+                    <select name="Dependents" required>
+                        <option value="">Select option</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Tenure (months)</label>
+                    <input type="number" name="tenure" min="0" max="100" step="1" placeholder="e.g. 24" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-heading">
+                <div class="section-number">02</div>
+                <div>
+                    <h3>Services & Support</h3>
+                    <p>Customer subscription details</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="field">
+                    <label>Phone Service</label>
+                    <select name="PhoneService" required>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Multiple Lines</label>
+                    <select name="MultipleLines" required>
+                        <option>No</option>
+                        <option>Yes</option>
+                        <option>No phone service</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Internet Service</label>
+                    <select name="InternetService" required>
+                        <option>DSL</option>
+                        <option>Fiber optic</option>
+                        <option>No</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Online Security</label>
+                    <select name="OnlineSecurity" required>
+                        <option>No</option>
+                        <option>Yes</option>
+                        <option>No internet service</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Online Backup</label>
+                    <select name="OnlineBackup" required>
+                        <option>No</option>
+                        <option>Yes</option>
+                        <option>No internet service</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Device Protection</label>
+                    <select name="DeviceProtection" required>
+                        <option>No</option>
+                        <option>Yes</option>
+                        <option>No internet service</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Tech Support</label>
+                    <select name="TechSupport" required>
+                        <option>No</option>
+                        <option>Yes</option>
+                        <option>No internet service</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Streaming TV</label>
+                    <select name="StreamingTV" required>
+                        <option>No</option>
+                        <option>Yes</option>
+                        <option>No internet service</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Streaming Movies</label>
+                    <select name="StreamingMovies" required>
+                        <option>No</option>
+                        <option>Yes</option>
+                        <option>No internet service</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-heading">
+                <div class="section-number">03</div>
+                <div>
+                    <h3>Billing & Contract</h3>
+                    <p>Payment and account information</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="field">
+                    <label>Contract</label>
+                    <select name="Contract" required>
+                        <option>Month-to-month</option>
+                        <option>One year</option>
+                        <option>Two year</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Paperless Billing</label>
+                    <select name="PaperlessBilling" required>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Payment Method</label>
+                    <select name="PaymentMethod" required>
+                        <option>Electronic check</option>
+                        <option>Mailed check</option>
+                        <option>Bank transfer (automatic)</option>
+                        <option>Credit card (automatic)</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Monthly Charges</label>
+                    <input type="number" name="MonthlyCharges" min="0" step="0.01" placeholder="e.g. 79.85" required>
+                </div>
+
+                <div class="field">
+                    <label>Total Charges</label>
+                    <input type="number" name="TotalCharges" min="0" step="0.01" placeholder="e.g. 1916.40" required>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="predict-btn">
+            <span>Analyze Customer</span>
+            <span class="arrow">→</span>
+        </button>
+    </form>
+
+    <footer>
+        <p>ChurnGuard • Machine Learning Customer Retention System</p>
+        <p>Built with Python • Flask • Scikit-learn</p>
+    </footer>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
